@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
+{% block content %}
+<h1>在线搜索</h1>
+{{ render_form(form) }}
+{% if data %}
+<div>
+    <style type="text/css">
+        table.gridtable {
+            font-family: verdana, arial, sans-serif;
+            font-size: 15px;
+            color: #333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+
+        table.gridtable th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+
+        table.gridtable td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+
+    <body>
+        <table border="1" class="gridtable">
+            <thead>
+                <th>名称</th>
+                <th>作者</th>
+                <th>专辑</th>
+                <th>操作</th>
+                <!-- <th>操作</th> -->
+            </thead>
+            <tbody>
+                <meta charset="UTF-8">
+                {% for song in data %}
+                <tr>
+                    <td><a href="https://music.163.com/song/media/outer/url?id={{song['songId']}}.mp3">{{song['songName']}}</a>
+                    </td>
+                    <td>{{song['authorName']}}</td>
+                    <td>{{song['albumName']}}</td>
+                    <td><a href="/add?songId={{song['songId']}}">添加</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</div>
+{% endif %}
+{% endblock %}

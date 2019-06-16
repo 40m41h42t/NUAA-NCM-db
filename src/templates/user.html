@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager, render_pagination %}
+<!DOCTYPE html>
+{% block content %}
+<h1>所有用户</h1>
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 20px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+<body>
+    <table class="gridtable">
+        <thead>
+            <th>昵称</th>
+            <th>签名</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            <meta charset="UTF-8">
+            {% for user in info %}
+            <tr>
+                <td><a href="/playlists?uid={{user[0]}}">{{user[1]}}</a></td>
+                <td>{{user[2]}}</td>
+                <td><a href="edit?userId={{user[0]}}">修改</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endblock %}
