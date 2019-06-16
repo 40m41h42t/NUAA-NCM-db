@@ -77,9 +77,11 @@ def music():
 def delete():
     songId = request.args.get('songId')
     if db.DeleteSongBySongId(songId):
-        return "删除成功"
+        retdata = "删除成功"
     else:
-        return "删除失败"
+        retdata = "删除失败"
+    return render_template('actionresult.html', data = retdata)
+    
 
 
 @app.route('/online_search', methods=['GET', 'POST'])
@@ -132,17 +134,19 @@ def add():
     if songId:
         songData = ncmapi.GetMusicInfoBySongId(songId)
         if db.AddSongDataByDirectory(songData) is True:
-            return "添加成功"
+            retdata = "添加成功"
         else:
-            return "添加失败"
+            retdata = "添加失败，数据库中已有相关歌曲"
+        return render_template('add.html', data = retdata)
     listId = request.args.get('listId')
     if listId:
         _, listData = ncmapi.GetSongsListByPlayListId(listId)
         if listData:
             db.AddSongsByPlayList(listData)
-            return "添加成功"
+            retdata = "添加成功"
         else:
-            return "添加失败"
+            retdata = "添加失败"
+        return render_template('actionresult.html', data = retdata)
 
 
 
@@ -183,14 +187,13 @@ def edit():
         newName = request.form.get('nickname')
         newSign = request.form.get('signature')
         if db.EditUserInfo(userId, newName, newSign):
-            return "修改成功"
+            retdata = "修改成功"
         else:
-            return "修改失败"
+            retdata = "修改失败"
+        return render_template('actionresult.html', data = retdata)
     userInfo = db.UserInfoFromId(userId)[0]
     form = EditUserForm()
     return render_template('edit.html', form = form, PreData=userInfo)
-
-
 
 
 if __name__ == '__main__':
