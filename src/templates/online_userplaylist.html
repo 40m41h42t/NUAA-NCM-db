@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager, render_pagination %}
+<!DOCTYPE html>
+{% block content %}
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+    <h1>{{nickname}}的歌单</h1>
+    <body>
+        <table class="gridtable">
+            <thead>
+                <th>歌单名称</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <meta charset="UTF-8">
+                {% for playList in userPlayList %}
+                    <tr>
+                        <td><a href="/online_playlist?id={{playList['listId']}}">{{playList['listName']}}</a></td>
+                        <td><a href="/add?addlist={{playList['listId']}}">添加歌单</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

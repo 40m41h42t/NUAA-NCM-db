@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/pagination.html' import render_pager, render_pagination %}
+<!DOCTYPE html>
+{% block content %}
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 13px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+    <h1>歌单：{{listName}}</h1>
+    <body>
+        <a href="/add?listId={{listId}}">添加歌单中的全部音乐</a>
+        <table class="gridtable">
+            <thead>
+                <th>歌曲名称</th>
+                <th>作者</th>
+                <th>专辑</th>
+                <th>操作</th>
+            </thead>
+            <tbody>
+                <meta charset="UTF-8">
+                {% for song in musicList %}
+                    <tr>
+                        <td><a href="https://music.163.com/song/media/outer/url?id={{song['songId']}}.mp3">{{song['songName']}}</a></td>
+                        <td>{{song['authorName']}}</td>
+                        <td>{{song['albumName']}}</td>
+                        <td><a href="/add?songId={{song['songId']}}">添加</a></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

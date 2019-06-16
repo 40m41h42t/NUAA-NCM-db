@@ -95,6 +95,11 @@ def AddSongDataByDirectory(songDic):
         print(e)
         return False
 
+def AddSongsByPlayList(listDic):
+    for songDic in listDic:
+        AddSongDataByDirectory(songDic)
+
+
 def DeleteSongBySongId(songId):
     sql = "DELETE FROM song WHERE songId='%s'" % (songId)
     try:

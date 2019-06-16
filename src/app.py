@@ -37,6 +37,16 @@ class LocalSearchForm(FlaskForm):
     tag = BooleanField('模糊搜索')
     submit = SubmitField('搜索')
 
+class OnlineSearchForm(FlaskForm):
+    keyword = StringField('关键字', validators=[DataRequired(), Length(1, 40)])
+    select = SelectField(
+        '选项',
+        choices=[
+            ('songName', '歌名'),
+            ('userName', '用户名')
+        ]
+    )
+    submit = SubmitField('搜索')
 
 class EditUserForm(FlaskForm):
     nickname = StringField('昵称', validators=[DataRequired(), Length(1, 40)])
@@ -77,21 +87,63 @@ def delete():
 def online_search():
     data = None
     if request.method == 'POST':
-        data = ncmapi.OnlineSearch(request.form.get('keyword'))
+        data = ncmapi.OnlineSearchMusic(request.form.get('keyword'))
         # print(data)
     form = SearchForm()
     return render_template('online_search.html', form=form, data=data)
+
+@app.route('/online_add',methods=['GET','POST'])
+def online_add():
+    userData = None
+    songData = None
+    if request.method == 'POST':
+        keyword = request.form.get('keyword')
+        category = request.form.get('select')
+        # print(keyword, category)
+        if category == 'userName':
+            userData = ncmapi.OnlineSearchApi(keyword,category)
+        elif category == 'songName':
+            songData = ncmapi.OnlineSearchApi(keyword,category)
+    form = OnlineSearchForm()
+    return render_template('online_add.html', form=form, userData = userData, songData = songData)
+
+@app.route('/online_userplaylist', methods=['GET','POST'])
+def online_userplaylist():
+    userId = request.args.get('uid')
+    if not userId:
+        return "非法参数"
+    userName, userPlayList = ncmapi.GetUserPlayListByUserId(userId)
+    # print(userPlayList)
+    return render_template('online_userplaylist.html', userPlayList = userPlayList, nickname = userName)
+
+@app.route('/online_playlist', methods=['GET','POST'])
+def online_playlist():
+    listId = request.args.get('id')
+    if not listId:
+        return "非法参数"
+    listName, MusicLists = ncmapi.GetSongsListByPlayListId(listId)
+    return render_template('online_playlist.html',listId = listId, listName = listName, musicList = MusicLists)
 
 
 @app.route('/add', methods=['GET', 'POST'])
 # 与在线搜索配套的添加
 def add():
     songId = request.args.get('songId')
-    songData = ncmapi.GetMusicInfoBySongId(songId)
-    if db.AddSongDataByDirectory(songData) is True:
-        return "添加成功"
-    else:
-        return "添加失败"
+    if songId:
+        songData = ncmapi.GetMusicInfoBySongId(songId)
+        if db.AddSongDataByDirectory(songData) is True:
+            return "添加成功"
+        else:
+            return "添加失败"
+    listId = request.args.get('listId')
+    if listId:
+        _, listData = ncmapi.GetSongsListByPlayListId(listId)
+        if listData:
+            db.AddSongsByPlayList(listData)
+            return "添加成功"
+        else:
+            return "添加失败"
+
 
 
 @app.route('/playlists', methods=['GET', 'POST'])
@@ -124,7 +176,6 @@ def local_search():
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit():
-    
     userId = request.args.get('userId')
     if not userId:
         return "空参数"
@@ -138,6 +189,8 @@ def edit():
     userInfo = db.UserInfoFromId(userId)[0]
     form = EditUserForm()
     return render_template('edit.html', form = form, PreData=userInfo)
+
+
 
 
 if __name__ == '__main__':

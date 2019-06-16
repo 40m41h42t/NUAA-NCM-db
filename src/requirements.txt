@@ -1,0 +1,7 @@
+Flask_WTF==0.14.2
+PyMySQL==0.9.3
+requests==2.19.1
+Bootstrap_Flask==1.0.10
+WTForms==2.2.1
+Flask==1.0.3
+flask_bootstrap==3.3.7.1
