@@ -2,59 +2,103 @@
 {% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
 {% block content %}
 <h1>在线搜索</h1>
+
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+<br>
 {{ render_form(form) }}
-{% if data %}
-<div>
-    <style type="text/css">
-        table.gridtable {
-            font-family: verdana, arial, sans-serif;
-            font-size: 15px;
-            color: #333333;
-            border-width: 1px;
-            border-color: #666666;
-            border-collapse: collapse;
-        }
+<br>
 
-        table.gridtable th {
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #dedede;
-        }
-
-        table.gridtable td {
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #ffffff;
-        }
-    </style>
-
-    <body>
-        <table border="1" class="gridtable">
-            <thead>
-                <th>名称</th>
-                <th>作者</th>
-                <th>专辑</th>
-                <th>操作</th>
-                <!-- <th>操作</th> -->
-            </thead>
-            <tbody>
-                <meta charset="UTF-8">
-                {% for song in data %}
-                <tr>
-                    <td><a href="https://music.163.com/song/media/outer/url?id={{song['songId']}}.mp3">{{song['songName']}}</a>
-                    </td>
-                    <td>{{song['authorName']}}</td>
-                    <td>{{song['albumName']}}</td>
-                    <td><a href="/add?songId={{song['songId']}}">添加</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </body>
-</div>
+{% if retdata %}
+<p>{{retdata}}</p>
 {% endif %}
+
+{% if songData %}
+
+<body>
+    <table class="gridtable">
+        <thead>
+            <th>名称</th>
+            <th>作者</th>
+            <th>专辑</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            <meta charset="UTF-8">
+            {% for song in songData %}
+            <tr>
+                <td><a
+                        href="https://music.163.com/song/media/outer/url?id={{song['songId']}}.mp3">{{song['songName']}}</a>
+                </td>
+                <td>{{song['authorName']}}</td>
+                <td>{{song['albumName']}}</td>
+                <td><a href="/online_search?add={{song['songId']}}">添加</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+
+{% endif %}
+{% if userData %}
+
+<body>
+    <table class="gridtable">
+        <thead>
+            <th>昵称</th>
+            <th>签名</th>
+        </thead>
+        <tbody>
+            <meta charset="UTF-8">
+            {% for user in userData %}
+            <tr>
+                <td><a href="/online_userplaylist?uid={{user['userId']}}">{{ user['nickname'] }}</a></td>
+                <td>{{ user['signature'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% endif %}
+
+
+<br>
+<h2>在线搜索使用指南</h2>
+<br>
+<p>在线搜索支持对歌名和用户名进行搜索，所有的数据都来源于网易云音乐。</p>
+<ul>
+    <li>
+        <p>搜索到音乐之后，可以查看音乐的作者、专辑，支持将音乐添加到本地数据库中。</p>
+    </li>
+    <li>
+        <p>搜索到用户后，可以通过点击用户昵称查看其歌单。</p>
+    </li>
+    <li>
+        <p>进入用户歌单界面后，可以点击歌单名称查看歌单内容，也可以将歌单添加到本地数据库中。</p>
+    </li>
+</ul>
 {% endblock %}

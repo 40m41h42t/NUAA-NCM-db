@@ -28,7 +28,7 @@
         background-color: #ffffff;
     }
 </style>
-    <h1>歌单：{{listName}}</h1>
+    <h1>歌单：{{listName['listName']}}</h1>
     <body>
         <a href="/add?listId={{listId}}">添加歌单中的全部音乐</a>
         <table class="gridtable">
@@ -43,7 +43,7 @@
                 {% for song in musicList %}
                     <tr>
                         <td><a href="https://music.163.com/song/media/outer/url?id={{song['songId']}}.mp3">{{song['songName']}}</a></td>
-                        <td>{{song['authorName']}}</td>
+                        <td>{{song['artistName']}}</td>
                         <td>{{song['albumName']}}</td>
                         <td><a href="/add?songId={{song['songId']}}">添加</a></td>
                     </tr>

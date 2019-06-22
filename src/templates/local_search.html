@@ -2,58 +2,111 @@
 {% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
 {% block content %}
 <h1>本地搜索</h1>
+<br>
 {{ render_form(form) }}
-{% if data %}
-<div>
-    <style type="text/css">
-        table.gridtable {
-            font-family: verdana, arial, sans-serif;
-            font-size: 14px;
-            color: #333333;
-            border-width: 1px;
-            border-color: #666666;
-            border-collapse: collapse;
-        }
 
-        table.gridtable th {
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #dedede;
-        }
+{% if Data %}
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
 
-        table.gridtable td {
-            border-width: 1px;
-            padding: 8px;
-            border-style: solid;
-            border-color: #666666;
-            background-color: #ffffff;
-        }
-    </style>
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+00
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+{% if choice=='listName' %}
 
-    <body>
-        <table border="1" class="gridtable">
-            <thead>
-                <th>名称</th>
-                <th>作者</th>
-                <th>专辑</th>
-                <th>操作</th>
-            </thead>
-            <tbody>
-                <meta charset="UTF-8">
-                {% for song in data %}
-                <tr>
-                    <td><a href="https://music.163.com/song/media/outer/url?id={{song[0]}}.mp3">{{song[1]}}</a>
-                    </td>
-                    <td>{{song[3]}}</td>
-                    <td>{{song[5]}}</td>
-                    <td><a href="/delete?songId={{song[0]}}">删除</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </body>
-</div>
+<body>
+    <table class="gridtable">
+        <thead>
+            <th>歌单名称</th>
+            <th>歌单描述</th>
+        </thead>
+        <tbody>
+            <meta charset="UTF-8">
+            {% for playList in Data %}
+            <tr>
+                <td>
+                    <a href="/local_playlist?id={{playList[0]}}">{{playList[1]}}</a>
+                </td>
+                <td>
+                    {% if playList[2] == 'None' %}
+                    这个人很懒，还没有写歌单描述
+                    {% else %}
+                    {{playList[2]}}
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+{% else %}
+
+<body>
+    <table class="gridtable">
+        <thead>
+            <th>专辑图片</th>
+            <th>名称</th>
+            <th>作者</th>
+            <th>专辑</th>
+            <th>操作</th>
+        </thead>
+        <tbody>
+            <meta charset="UTF-8">
+            {% for song in Data %}
+            <tr>
+                <td><img src="{{song[6]}}" width="50" height="50" alt="{{song[1]}}"></td>
+                <td><a href="/song?id={{song[0]}}">{{song[1]}}</a>
+                </td>
+                <td>{{song[3]}}</td>
+                <td>{{song[5]}}</td>
+                <td><a href="/delete?songId={{song[0]}}">删除</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
 {% endif %}
+
+{% endif %}
+<br><br>
+<h2>本地搜索使用指南</h2>
+<br>
+<p>本地搜索支持查询本地数据库中保存的信息</p>
+<ul>
+    <li>
+        <p>本地搜索支持查看本地保存的音乐和歌单。</p>
+    </li>
+    <li>
+        <p>本地搜索支持模糊查询和精确查询，默认搜索方式是模糊查询。</p>
+    </li>
+    <li>
+        <p>搜索音乐时，支持按照歌名、作者名称、专辑名称查询。</p>
+    </li>
+    <li>
+        <p>用户可以点击音乐搜索的结果进入音乐详情界面，也可以对音乐进行删除操作。</p>
+    </li>
+    <li>
+        <p>搜索歌单时支持按照歌单名称查询。</p>
+    </li>
+</ul>
 {% endblock %}

@@ -2,9 +2,22 @@
 
 {% block content %}
     <h1>Music Box</h1>
+    <p>一个简单的个人本地音乐管理系统</p>
+    <p>已经实现的功能：</p>
 <ul>
-    <li><a href="{{ url_for('user') }}">用户</a></li>
-    <li><a href="{{ url_for('music') }}">音乐</a></li>
-    <li><a href="{{ url_for('online_add') }}">在线搜索</a></li>
+    <li><a href="{{ url_for('online_search') }}">在线搜索</a></li>
+    <p>在线搜索功能支持按照关键字搜索歌名和网易云音乐上的用户名，在返回结果中支持添加歌单、添加音乐的操作。</p>
+    <li><a href="{{ url_for('local_search') }}">本地搜索</a></li>
+    <p>本地搜索功能支持按照关键字精确搜索本地音乐和歌单。</p>
+    <li><a href="{{ url_for('local_playlists') }}">本地歌单</a></li>
+    <p>查看本地歌单功能支持歌单的删除和修改操作。</p>
+    <li><a href="{{ url_for('local_music') }}">本地音乐</a></li>
+    <p>查看本地音乐功能支持本地音乐的查看和删除操作。</p>
+</ul>
+<p>未来可能实现的功能(TODO)：</p>
+<ul>
+    <li>实现一个简易的播放器</li>
+    <li>支持添加本地音乐到本地歌单中</li>
+    <li>......</li>
 </ul>
 {% endblock %}

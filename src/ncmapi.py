@@ -28,10 +28,11 @@ def GetMusicInfoBySongId(songId):
     d = {}
     d['songId'] = song['id']
     d['songName'] = song['name']
-    d['authorId'] = song['ar'][0]['id']
-    d['authorName'] = song['ar'][0]['name']
+    d['artistId'] = song['ar'][0]['id']
+    d['artistName'] = song['ar'][0]['name']
     d['albumId'] = song['al']['id']
     d['albumName'] = song ['al']['name']
+    d['albumPic'] = song['al']['picUrl']
     # print(d)
     return d
 
@@ -53,18 +54,22 @@ def GetUserPlayListByUserId(uid):
 def GetSongsListByPlayListId(listId):
     url = 'http://localhost:3000/playlist/detail?id=%s' % listId
     songId = requests.get(url).json()
-    ret = []
-    listName = songId['playlist']['name']
+    listInfo = {}
+    listInfo['listName'] = songId['playlist']['name']
+    listInfo['listId'] = songId['playlist']['id']
+    listInfo['description'] = songId['playlist']['description']
+    songsInfo = []
     for songInfo in songId['playlist']['tracks']:
         d = {}
         d['songId'] = songInfo['id']
         d['songName'] = songInfo['name']
-        d['authorId'] = songInfo['ar'][0]['id']
-        d['authorName'] = songInfo['ar'][0]['name']
+        d['artistId'] = songInfo['ar'][0]['id']
+        d['artistName'] = songInfo['ar'][0]['name']
         d['albumId'] = songInfo['al']['id']
         d['albumName'] = songInfo['al']['name']
-        ret.append(d)
-    return listName, ret
+        d['albumPic'] = songInfo['al']['picUrl']
+        songsInfo.append(d)
+    return listInfo, songsInfo
 
 def OnlineSearchUser(keyword):
     if not keyword:
@@ -87,9 +92,5 @@ def OnlineSearchApi(keyword, category):
         return OnlineSearchUser(keyword)
     elif category == 'songName':
         return OnlineSearchMusic(keyword)
-# def GetUserNameByUserId(uid):
-#     url = 'http://localhost:3000/user/detail?uid=%s' % uid
-#     data = requests.get(url)
-#     return data['profile']['nickname']
-# GetUserPlayListByUserId('37682214')
-# OnlineSearchUser('40m41h42t')
+
+

@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style type="text/css">
+    table.gridtable {
+        font-family: verdana, arial, sans-serif;
+        font-size: 11px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #666666;
+        border-collapse: collapse;
+    }
+
+    table.gridtable th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #dedede;
+    }
+
+    table.gridtable td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #666666;
+        background-color: #ffffff;
+    }
+</style>
+
+<h1>{{songData[1]}}</h1>
+<ul>
+    <li>作者：{{songData[3]}}</li>
+    <li>专辑：{{songData[5]}}</li>
+    <li>在线播放：<a href="https://music.163.com/song/media/outer/url?id={{songData[0]}}.mp3">{{songData[1]}}</a></li>
+</ul>
+<br>
+<p>包含本音乐的歌单</p>
+<body>
+        <table class="gridtable">
+            <thead>
+                <th>歌单名称</th>
+                <th>歌单描述</th>
+                <th colspan="2">操作</th>
+            </thead>
+            <tbody>
+                <meta charset="UTF-8">
+                {% for playList in Lists %}
+                    <tr>
+                        <td><a href="/local_playlist?id={{playList[0]}}">{{playList[1]}}</a></td>
+                        <td>
+                            {% if playList[2] == 'None' %}
+                            这个人很懒，还没有写歌单描述
+                            {% else %}
+                            {{playList[2]}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/delete?listId={{playList[0]}}">删除</a>
+                        </td>
+                        <td>
+                            <a href="/edit?listId={{playList[0]}}">修改</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+{% endblock %}

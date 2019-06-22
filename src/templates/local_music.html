@@ -38,18 +38,18 @@
             <th>名称</th>
             <th>作者</th>
             <th>专辑</th>
-            <th colspan="2">操作</th>
+            <th>操作</th>
             <!-- <th>操作</th> -->
         </thead>
         <tbody>
             <meta charset="UTF-8">
-            {% for song in info %}
+            {% for song in data %}
             <tr>
-                <td><a href="https://music.163.com/song/media/outer/url?id={{song[0]}}.mp3">{{song[1]}}</a></td>
+                <!-- <td><a href="https://music.163.com/song/media/outer/url?id={{song[0]}}.mp3">{{song[1]}}</a></td> -->
+                <td><a href="/song?id={{song[0]}}">{{song[1]}}</a></td>
                 <td>{{song[3]}}</td>
                 <td>{{song[5]}}</td>
                 <td><a href="/delete?songId={{song[0]}}">删除</a></td>
-                <td>修改</td>
             </tr>
             {% endfor %}
         </tbody>

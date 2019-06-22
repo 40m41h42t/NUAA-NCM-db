@@ -1,48 +1,10 @@
 {% extends 'base.html' %}
 {% from 'bootstrap/form.html' import render_form, render_field, render_form_row %}
 {% block content %}
-<h1>原始数据</h1>
-<style type="text/css">
-    table.gridtable {
-        font-family: verdana, arial, sans-serif;
-        font-size: 20px;
-        color: #333333;
-        border-width: 1px;
-        border-color: #666666;
-        border-collapse: collapse;
-    }
 
-    table.gridtable th {
-        border-width: 1px;
-        padding: 8px;
-        border-style: solid;
-        border-color: #666666;
-        background-color: #dedede;
-    }
-
-    table.gridtable td {
-        border-width: 1px;
-        padding: 8px;
-        border-style: solid;
-        border-color: #666666;
-        background-color: #ffffff;
-    }
-</style>
-<body>
-    <table class="gridtable">
-        <thead>
-            <th>昵称</th>
-            <th>签名</th>
-        </thead>
-        <tbody>
-            <meta charset="UTF-8">
-            <tr>
-                <td><a href="/playlists?uid={{PreData[0]}}">{{PreData[1]}}</a></td>
-                <td>{{PreData[2]}}</td>
-            </tr>
-        </tbody>
-    </table>
-</body>
-<h1>修改数据</h1>
+<h1>修改歌单</h1>
+{% if info %}
+{{info}}
+{% endif %}
 {{ render_form(form) }}
 {% endblock %}

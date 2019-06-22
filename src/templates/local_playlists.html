@@ -5,7 +5,7 @@
 <style type="text/css">
     table.gridtable {
         font-family: verdana, arial, sans-serif;
-        font-size: 14px;
+        font-size: 11px;
         color: #333333;
         border-width: 1px;
         border-color: #666666;
@@ -28,19 +28,32 @@
         background-color: #ffffff;
     }
 </style>
-    <h1>{{nickname}}的歌单</h1>
+    <h1>本地歌单</h1>
     <body>
         <table class="gridtable">
             <thead>
                 <th>歌单名称</th>
-                <th>操作</th>
+                <th>歌单描述</th>
+                <th colspan="2">操作</th>
             </thead>
             <tbody>
                 <meta charset="UTF-8">
-                {% for playList in userPlayList %}
+                {% for playList in PlayListsData %}
                     <tr>
-                        <td><a href="/online_playlist?id={{playList['listId']}}">{{playList['listName']}}</a></td>
-                        <td><a href="/add?listId={{playList['listId']}}">添加歌单</a></td>
+                        <td><a href="/local_playlist?id={{playList[0]}}">{{playList[1]}}</a></td>
+                        <td>
+                            {% if playList[2] == 'None' %}
+                            这个人很懒，还没有写歌单描述
+                            {% else %}
+                            {{playList[2]}}
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="/delete?listId={{playList[0]}}">删除</a>
+                        </td>
+                        <td>
+                            <a href="/edit?listId={{playList[0]}}">修改</a>
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>
